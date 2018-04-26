@@ -1,38 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable'
 import { Router } from '@angular/router';
-import { UserService } from '../shared/user-service/user.service';
+import { AuthService } from '../shared/user-service/auth.service';
 import { Session } from '../shared/Session';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [UserService]
+  providers: [AuthService]
 })
 export class LoginComponent implements OnInit {
 
   email: string = '';
   password: string = '';
 
-  constructor(private _userService: UserService, private _router: Router) {
+  constructor(private _authService: AuthService, private _router: Router) {
 
   }
   ngOnInit() {
   }
 
   loginAction() {
-    this._userService.login(this.email, this.password)
-      .subscribe(
+    this._authService.login(this.email, this.password)
+      .then(
         res => {
-          localStorage.setItem('token', res.token);
-          Session._user = res.user;
-          this._router.navigate(['dashboard']);
-        },
-        err => {
-          this.password = '';
-        }
-      )
+          if(res) this._router.navigate(['dashboard']);
+          else this.password = '';
+        })
+      .catch(err => {
+        this.password = '';
+      })
   }
 
 }
