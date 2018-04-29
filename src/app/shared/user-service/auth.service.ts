@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable'
 import { DevEnv } from '../config';
 import { Doctor } from './Doctor';
 import { promise } from 'protractor';
-import { Session } from '../Session';
 
 interface ILoginResponce {
     message: string;
@@ -28,9 +27,18 @@ export class AuthService {
     private _LOGIN_URL: string = DevEnv.SERVER + "maidai-solution/login";
     private _ISAUTH_URL: string = DevEnv.SERVER + 'maidai/checkAuth';
     private _REGISTER_URL: string = DevEnv.SERVER + "maidai-solution/register";
+    private _SESSION_URL: string = DevEnv.SERVER + "maidai-solution/doctors/token";
 
     constructor(private _http: HttpClient) {
 
+    }
+
+    getCurrentSession(): Observable<Doctor> {
+        return this._http.post<Doctor>(this._SESSION_URL, {}, {
+            headers: {
+                authorization: 'b ' + localStorage.getItem('token')
+            }
+        });
     }
 
     isAuthenticated(): Promise<boolean> {
@@ -38,8 +46,7 @@ export class AuthService {
             headers: {
                 authorization: 'b ' + localStorage.getItem('token')
             }
-        })
-            .toPromise()
+        }).toPromise()
             .then(res => {
                 if (res.message == 'Auth successful') return true;
                 return false;
@@ -61,7 +68,6 @@ export class AuthService {
         }).toPromise()
             .then(res => {
                 localStorage.setItem('token', res.token);
-                Session.getInstance(res.user);
                 return true;
             })
             .catch(err => {
@@ -76,7 +82,6 @@ export class AuthService {
         }).toPromise()
             .then(res => {
                 localStorage.setItem('token', res.token);
-                Session.getInstance(res.user);
                 return true;
             })
             .catch(err => {

@@ -12,4 +12,9 @@ export class SampleAnalyzerComponent implements OnInit {
   ngOnInit() {
   }
 
+  public fileEvent($event) {
+    const fileSelected: File = $event.target.files[0];
+    console.log(fileSelected.name)
+  }
+
 }
