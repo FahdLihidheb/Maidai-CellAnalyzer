@@ -32,6 +32,8 @@ import { RegisterProComponent } from './register-pro/register-pro.component';
 import { AnalyzerComponent } from './analyzer/analyzer.component';
 import { AppoinmentComponent } from './appoinment/appoinment.component';
 import { PatientFilesComponent } from './patient-files/patient-files.component';
+//--
+import { devKeys } from '../environments/DevKeys';
 
 
 const routes: Routes = [
@@ -85,7 +87,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyC-R3bAtHNQmGa5IuyUaUxlkBc1IV5UEWk'
+      apiKey: devKeys.gmAPIKey
     }),
     CloudinaryModule.forRoot(
       { Cloudinary }, { cloud_name: 'drtg6wmwx' } as CloudinaryConfiguration
