@@ -2,31 +2,33 @@
 <div class="row">
   <div class="col-md-4 order-md-1 mb-4">
     <h4 class="mb-3">Your card</h4>
+    <button data-toggle="modal" data-target="#exampleModalCenter" type="button" style="width: 18rem; margin-bottom: 5px" class="btn btn-outline-primary btn-sm">Edit card</button>
     <div class="card" style="width: 18rem;">
       <span style='text-align: center'>
         <br>
-        <img class="card-img-top" src="assets/images/doctor-male.png" alt="Card image cap" style="max-width: 75%;max-height: 75%;">
+        <img src="http://res.cloudinary.com/drtg6wmwx/image/upload/v{{profile.imagePath}}">
       </span>
       <div class="card-body">
         <h5 class="card-title">{{profile.firstname}} {{profile.lastname}}</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Contact me</a>
+        <h6 class="card-subtitle mb-2 text-muted">{{profile.profession}}</h6>
+        <p class="card-text">{{profile.address.name}}</p>
       </div>
     </div>
   </div>
+
   <div class="col-md-8 order-md-2">
     <h4 class="mb-3">Your profile</h4>
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="firstName">First name</label>
-        <input [(ngModel)]='profile.firstname' type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+        <input disabled [(ngModel)]='profile.firstname' type="text" class="form-control" id="firstName" placeholder="" value="" required="">
         <div class="invalid-feedback">
           Valid first name is required.
         </div>
       </div>
       <div class="col-md-6 mb-3">
         <label for="lastName">Last name</label>
-        <input [(ngModel)]='profile.lastname' type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+        <input disabled [(ngModel)]='profile.lastname' type="text" class="form-control" id="lastName" placeholder="" value="" required="">
         <div class="invalid-feedback">
           Valid last name is required.
         </div>
@@ -39,7 +41,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">@</span>
         </div>
-        <input [(ngModel)]='profile.email' type="email" class="form-control" id="username" placeholder="Username" required="">
+        <input disabled [(ngModel)]='profile.email' type="email" class="form-control" id="username" placeholder="Username" required="">
         <div class="invalid-feedback" style="width: 100%;">
           Your username is required.
         </div>
@@ -47,8 +49,14 @@
     </div>
 
     <div class="mb-3">
+      <label for="number">Phone number
+      </label>
+      <input disabled [(ngModel)]='profile.phonenumber' type="text" class="form-control" id="phonenumber" placeholder="xxx xx xxx xxx">
+    </div>
+
+    <div class="mb-3">
       <label for="profession">Profession</label>
-      <input [(ngModel)]='profile.profession' type="text" class="form-control" id="profession" placeholder="Doctor , Cancer Specialized"
+      <input disabled [(ngModel)]='profile.profession' type="text" class="form-control" id="profession" placeholder="Doctor , Cancer Specialized"
         required="">
       <div class="invalid-feedback">
         Please enter your profession.
@@ -56,18 +64,75 @@
     </div>
 
     <div class="mb-3">
+      <label for="number">Gender
+      </label>
+      <input disabled [(ngModel)]='profile.gender' type="text" class="form-control" id="phonenumber" placeholder="xxx xx xxx xxx">
+    </div>
+
+    <div class="mb-3">
       <label for="address">Address</label>
-      <input [(ngModel)]='profile.address' type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+      <input disabled [(ngModel)]='profile.address.name' type="text" class="form-control" id="address" placeholder="1234 Main St"
+        required="">
       <div class="invalid-feedback">
         Please enter your shipping address.
       </div>
     </div>
-
-    <div class="mb-3">
-      <label for="number">Phone number
-      </label>
-      <input [(ngModel)]='profile.phonenumber' type="text" class="form-control" id="phonenumber" placeholder="xxx xx xxx xxx">
-    </div>
     <hr class="mb-4">
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Card picture</h5>
+        <label>Upload image</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button (click)="uploader.queue[0].upload()" type="button" class="btn btn-success btn-xs" [disabled]="uploader.queue[0] ? false : true">
+              <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+          </div>
+          <div class="custom-file">
+            <input ng2FileSelect [uploader]="uploader" type="file" class="custom-file-input" id="inputGroupFile01">
+            <label class="custom-file-label" for="inputGroupFile01">{{uploader.queue[0] ? uploader.queue[0].file.name : 'Chose..'}}</label>
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': (uploader.queue[0] ? uploader.queue[0].progress : 0) + '%' }"
+            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <hr class="mb-4">
+        <h5>Privacy Settings</h5>
+        <label>Share my information</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input [(ngModel)]='!profile.privacySettings.isEmail' type="checkbox" aria-label="Checkbox for following text input">
+            </div>
+          </div>
+          <input disabled type="text" class="form-control" aria-label="Text input with checkbox" value="{{profile.email}}">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input [(ngModel)]='!profile.privacySettings.isPhonenumber' type="checkbox" aria-label="Checkbox for following text input">
+            </div>
+          </div>
+          <input disabled type="text" class="form-control" aria-label="Text input with checkbox" value="{{profile.phonenumber}}">
+        </div>
+        <div class="input-group mb-3">
+          <button type="button" class="btn btn-primary">Save settings</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

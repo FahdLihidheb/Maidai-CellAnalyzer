@@ -4,8 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
+import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
+import { Cloudinary } from 'cloudinary-core';
+import { MatIconRegistry, MatIconModule } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 import { AppComponent } from './app.component';
@@ -13,29 +18,26 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { AnalyzerComponent } from './analyzer/analyzer.component';
 import { AlwaysAuthGuard } from './shared/alwaysAuthGuard';
+import { AlwaysNotAuthGuard } from './shared/alwaysNotAuthGuard';
 import { ProfileComponent } from './profile/profile.component';
-import { PatientsComponent } from './patients/patients.component';
 
-//service
+// service
 import { AuthService } from './shared/user-service/auth.service';
 import { RegisterComponent } from './register/register.component';
 import { RegisterPrivateComponent } from './register-private/register-private.component';
 import { RegisterEnterpriseComponent } from './register-enterprise/register-enterprise.component';
 import { PricingListComponent } from './pricing-list/pricing-list.component';
 import { RegisterProComponent } from './register-pro/register-pro.component';
-import { SampleAnalyzerComponent } from './sample-analyzer/sample-analyzer.component';
-import { AnalyzerMenuComponent } from './analyzer-menu/analyzer-menu.component';
-import { FileAnalyzerComponent } from './file-analyzer/file-analyzer.component';
-import { MyPatientsListComponent } from './my-patients-list/my-patients-list.component';
-import { AssistantPatientListComponent } from './assistant-patient-list/assistant-patient-list.component';
+import { AnalyzerComponent } from './analyzer/analyzer.component';
+import { AppoinmentComponent } from './appoinment/appoinment.component';
+import { PatientFilesComponent } from './patient-files/patient-files.component';
 
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AlwaysNotAuthGuard] },
   {
-    path: 'register', component: RegisterComponent, children: [
+    path: 'register', component: RegisterComponent, canActivate: [AlwaysNotAuthGuard], children: [
       { path: '', redirectTo: 'pricing', pathMatch: 'full' },
       { path: 'pricing', component: PricingListComponent },
       { path: 'private-free', component: RegisterPrivateComponent },
@@ -47,19 +49,9 @@ const routes: Routes = [
     path: 'dashboard', component: DashboardComponent, canActivate: [AlwaysAuthGuard], children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileComponent },
-      { path: 'patients', component: PatientsComponent, children: [
-        { path: '', redirectTo: 'myPatients', pathMatch: 'full' },
-        { path: 'myPatients', component: MyPatientsListComponent },
-        { path: 'assistantPatients', component: AssistantPatientListComponent },
-      ] },
-      {
-        path: 'analyzer', component: AnalyzerComponent, children: [
-          { path: '', redirectTo: 'menu', pathMatch: 'full' },
-          { path: 'menu', component: AnalyzerMenuComponent },
-          { path: 'sample-analyzer', component: SampleAnalyzerComponent },
-          { path: 'file-analyzer', component: FileAnalyzerComponent },
-        ]
-      }
+      { path: 'patients', component: PatientFilesComponent },
+      { path: 'analyzer', component: AnalyzerComponent },
+      { path: 'appoinments', component: AppoinmentComponent }
     ]
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
@@ -72,19 +64,15 @@ const routes: Routes = [
     DashboardComponent,
     NavbarComponent,
     SidebarComponent,
-    AnalyzerComponent,
     ProfileComponent,
-    PatientsComponent,
     RegisterComponent,
     RegisterPrivateComponent,
     RegisterEnterpriseComponent,
     PricingListComponent,
     RegisterProComponent,
-    SampleAnalyzerComponent,
-    AnalyzerMenuComponent,
-    FileAnalyzerComponent,
-    MyPatientsListComponent,
-    AssistantPatientListComponent
+    AnalyzerComponent,
+    AppoinmentComponent,
+    PatientFilesComponent
   ],
   imports: [
     BrowserModule,
@@ -92,13 +80,22 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
+    MatIconModule,
+    FileUploadModule,
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC-R3bAtHNQmGa5IuyUaUxlkBc1IV5UEWk'
-    })
+    }),
+    CloudinaryModule.forRoot(
+      { Cloudinary }, { cloud_name: 'drtg6wmwx' } as CloudinaryConfiguration
+    )
   ],
-  providers: [AlwaysAuthGuard, AuthService],
+  providers: [AlwaysAuthGuard, AlwaysNotAuthGuard, AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+    matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('/assets/mdi.svg'));
+  }
+}

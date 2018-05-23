@@ -33,18 +33,24 @@ export class AuthService {
 
     }
 
+    getCurrentToken() {
+        return sessionStorage.getItem('token')
+    }
+
     getCurrentSession(): Observable<Doctor> {
         return this._http.post<Doctor>(this._SESSION_URL, {}, {
             headers: {
-                authorization: 'b ' + localStorage.getItem('token')
+                authorization: 'b ' + sessionStorage.getItem('token')
             }
         });
     }
 
     isAuthenticated(): Promise<boolean> {
+        if (localStorage.getItem('token'))
+            sessionStorage.setItem('token', localStorage.getItem('token'))
         return this._http.post<IAuthResponse>(this._ISAUTH_URL, {}, {
             headers: {
-                authorization: 'b ' + localStorage.getItem('token')
+                authorization: 'b ' + sessionStorage.getItem('token')
             }
         }).toPromise()
             .then(res => {
@@ -64,10 +70,12 @@ export class AuthService {
             profession: user.profession,
             phonenumber: user.phonenumber,
             address: user.address,
-            password: password
+            password: password,
+            gender: user.gender,
+            imagePath: user.imagePath
         }).toPromise()
             .then(res => {
-                localStorage.setItem('token', res.token);
+                sessionStorage.setItem('token', res.token);
                 return true;
             })
             .catch(err => {
@@ -75,16 +83,25 @@ export class AuthService {
             })
     }
 
-    login(email: string, password: string): Promise<boolean> {
+    login(email: string, password: string, rememberMe: boolean): Promise<boolean> {
         return this._http.post<ILoginResponce>(this._LOGIN_URL, {
             "email": email,
             "password": password
         }).toPromise()
             .then(res => {
-                localStorage.setItem('token', res.token);
+                if (rememberMe) {
+                    localStorage.setItem('token', res.token);
+                    sessionStorage.setItem('token', res.token);
+                }
+                else {
+                    sessionStorage.setItem('token', res.token);
+                    console.log(res.token)
+                }
+
                 return true;
             })
             .catch(err => {
+                localStorage.clear();
                 return false;
             })
     }

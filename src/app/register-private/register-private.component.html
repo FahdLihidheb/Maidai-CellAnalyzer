@@ -99,6 +99,17 @@
           <p class="text-danger">Your profession is required.</p>
         </div>
       </div>
+
+      <label for="profession">Gender</label>
+      <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+          </div>
+          <select formControlName='gender' class="custom-select" id="inputGroupSelect01" name='gender'>
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
       <div class="mb-3">
         <label for="user.number">Phone number
         </label>
@@ -113,7 +124,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Map</span>
           </div>
-          <input [(ngModel)]='addressChosen' (input)="onAddressSearchChange($event.target.value)" formControlName='address' type="text" class="form-control" name='address'>
+          <input [(ngModel)]='address.name' (input)="onAddressSearchChange($event.target.value)" formControlName='address' type="text" class="form-control" name='address'>
           <div *ngIf="!rForm.controls['address'].valid && rForm.controls['address'].touched" style="width: 100%;">
             <p class="text-danger">Your address is required.</p>
           </div>

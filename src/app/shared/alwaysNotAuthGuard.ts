@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AlwaysAuthGuard implements CanActivate {
+export class AlwaysNotAuthGuard implements CanActivate {
 
     constructor(private _authService: AuthService, private _router: Router) {
 
@@ -13,8 +13,8 @@ export class AlwaysAuthGuard implements CanActivate {
     canActivate(): Promise<boolean> {
         return this._authService.isAuthenticated()
             .then(res => {
-                if(!res) {
-                    this._router.navigate(['login']);
+                if(res) {
+                    this._router.navigate(['dashboard']);
                     return false;
                 }
                 return true;

@@ -1,12 +1,22 @@
 export class Doctor {
 
     _id: string;
-    email: string;
+    email: String;
     firstname: string;
     lastname: string;
     profession: string;
-    phonenumber: string;
-    address: string;
+    phonenumber: String;
+    gender: string;
+    imagePath: string;
+    privacySettings: {
+        isEmail: true,
+        isPhonenumber: true
+    }
+    address: {
+        name: '',
+        lat: 0.00,
+        lng: 0.00
+    };
 
     constructor(email, firstname, lastname, profession, phonenumber, address) {
         this.email = email;

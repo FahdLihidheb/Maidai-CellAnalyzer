@@ -1,51 +1,64 @@
 <div class="container-fluid">
-    <div class="py-4 text-center">
-        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-        <h2>Maidai Solution</h2>
-        <p class="lead">Cancer? not that smart.</p>
+  <div class="py-4 text-center">
+    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h2>Maidai Solution</h2>
+    <p class="lead">Cancer? not that smart.</p>
+  </div>
+  <div class="row">
+    <div class="col">
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="col-md-3">
+      <form [formGroup]='rForm' (ngSubmit)='onFormSubmit(rForm.value)'>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input formControlName='email' type="email" class="form-control" placeholder="Enter email" name='email'>
+          <div *ngIf="!rForm.controls['email'].valid && rForm.controls['email'].touched">
+            <p class="text-danger">Valid email is required.</p>
+          </div>
         </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input [(ngModel)]='email' type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input [(ngModel)]='password' type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Remember me</label>
-            </div>
-            <div class="text-center">
-                <button (click)='loginAction()' type="submit" class="btn btn-primary">Login</button>
-                <div class="my-2 pt-2">
-                    <small class=" text-small">don't have an account?</small>
-                    <li class="list-inline-item">
-                        <a [routerLink]="['/register']" >Register</a>
-                    </li>
-                </div>
-            </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input formControlName='password' type="password" class="form-control" name='password' placeholder="Password">
+          <div *ngIf="!rForm.controls['password'].valid && rForm.controls['password'].touched">
+            <p class="text-danger">Password is required.</p>
+          </div>
+        </div>
+        <div class="form-group form-check">
+          <input formControlName='rememberMe' type="checkbox" class="form-check-input" name='rememberMe' value="true">
+          <label class="form-check-label" for="exampleCheck1">Remember me</label>
+        </div>
+        <div class="text-center">
+          <button value="Submit form" [disabled]="!rForm.valid" type="submit" class="btn btn-primary">Login</button>
+          <div *ngIf="wrong">
+            <p class="text-danger">Wrong email or password.</p>
+          </div>
+        </div>
+      </form>
+      <div class="text-center">
+        <div class="my-2 pt-2">
+          <small class=" text-small">don't have an account?</small>
+          <li class="list-inline-item">
+            <a [routerLink]="['/register']">Register</a>
+          </li>
+        </div>
+      </div>
 
-        </div>
-        <div class="col">
-        </div>
     </div>
+    <div class="col">
+    </div>
+  </div>
 </div>
 <footer class="my-4 pt-4 text-muted text-center text-small">
-    <p class="mb-1">© 2017-2018 Maidai</p>
-    <ul class="list-inline">
-        <li class="list-inline-item">
-            <a href="#">Privacy</a>
-        </li>
-        <li class="list-inline-item">
-            <a href="#">Terms</a>
-        </li>
-        <li class="list-inline-item">
-            <a href="#">Support</a>
-        </li>
-    </ul>
+  <p class="mb-1">© 2017-2018 Maidai</p>
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a href="#">Privacy</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="#">Terms</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="#">Support</a>
+    </li>
+  </ul>
 </footer>

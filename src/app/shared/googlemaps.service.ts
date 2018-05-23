@@ -19,12 +19,9 @@ export class MapsService {
                     geocoder.geocode({ latLng: latlng }, (results, status) => {
                         if (status === google.maps.GeocoderStatus.OK) {
                             const place = {
-                                city1: results[0].address_components[0].short_name,
-                                city2: results[0].address_components[1].short_name,
-                                city3: results[0].address_components[2].short_name,
-                                country1: results[0].address_components[3].short_name,
-                                country2: results[0].address_components[4].short_name,
-                                country3: results[0].address_components[5].short_name
+                                name: results[0].formatted_address,
+                                lat: lat,
+                                lng: lng
                             }
                             observer.next(place);
                             observer.complete();
