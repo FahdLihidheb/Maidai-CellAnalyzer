@@ -34,6 +34,11 @@ import { AppoinmentComponent } from './appoinment/appoinment.component';
 import { PatientFilesComponent } from './patient-files/patient-files.component';
 //--
 import { devKeys } from '../environments/DevKeys';
+import { PatientFileDetailsComponent } from './patient-file-details/patient-file-details.component';
+import { PatientFileCellAnalyzeComponent } from './patient-file-cell-analyze/patient-file-cell-analyze.component';
+import { CellAnalyzeComponent } from './cell-analyze/cell-analyze.component';
+import { AnalyzerOutletComponent } from './analyzer-outlet/analyzer-outlet.component';
+import { PatientFilesListComponent } from './patient-files-list/patient-files-list.component';
 
 
 const routes: Routes = [
@@ -51,8 +56,20 @@ const routes: Routes = [
     path: 'dashboard', component: DashboardComponent, canActivate: [AlwaysAuthGuard], children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileComponent },
-      { path: 'patients', component: PatientFilesComponent },
-      { path: 'analyzer', component: AnalyzerComponent },
+      {
+        path: 'patients', component: PatientFilesComponent, children: [
+          { path: '', redirectTo: 'list', pathMatch: 'full' },
+          { path: 'list', component: PatientFilesListComponent },
+          { path: 'details/:patientFileId', component: PatientFileDetailsComponent },
+        ]
+      },
+      {
+        path: 'analyzer', component: AnalyzerOutletComponent, children: [
+          { path: '', component: AnalyzerComponent },
+          { path: 'patient-file-analyze', component: PatientFileCellAnalyzeComponent },
+          { path: 'cell-analyze', component: CellAnalyzeComponent },
+        ]
+      },
       { path: 'appoinments', component: AppoinmentComponent }
     ]
   },
@@ -74,7 +91,12 @@ const routes: Routes = [
     RegisterProComponent,
     AnalyzerComponent,
     AppoinmentComponent,
-    PatientFilesComponent
+    PatientFilesComponent,
+    PatientFileDetailsComponent,
+    PatientFileCellAnalyzeComponent,
+    CellAnalyzeComponent,
+    AnalyzerOutletComponent,
+    PatientFilesListComponent
   ],
   imports: [
     BrowserModule,
