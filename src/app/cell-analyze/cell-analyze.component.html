@@ -6,37 +6,50 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">Sample details</h6>
     <br>
 
-    <form>
+    
 
 
       <div class="form-group">
         <label for="exampleFormControlInput1">Microscopic image</label>
         <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFile01">
-          <label class="custom-file-label" for="inputGroupFile01">Choose image</label>
+          <input ng2FileSelect [uploader]="uploader" type="file" class="custom-file-input" id="inputGroupFile01">
+          <label class="custom-file-label" for="inputGroupFile01">{{uploader.queue[0] ? uploader.queue[0].file.name : 'Choose image..'}}</label>
         </div>
       </div>
 
 
       <div class="form-group">
         <label for="exampleFormControlInput1">Analyze codename</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1">
+        <input type="text" class="form-control" id="exampleFormControlInput1" [(ngModel)]="analyseFile.codename" >
       </div>
 
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Analayze notes</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea [(ngModel)]="analyseFile.note" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block">Analyze sample</button>
-    </form>
+      <button type="submit" class="btn btn-primary btn-block" (click)="uploader.queue[0].upload()" [disabled]="uploader.queue[0] ? false : true">
+
+        Analyze sample</button>
+
+    
   </div>
 
   <div class="col-md-8 order-md-2 box-shadow p-3">
     <h6 class="border-bottom border-gray pb-2 mb-0">Analyze diagnosis</h6>
-    <div class="text-center text-muted pt-3">
+    <div *ngIf="result;else NoResultsYet" class="text-center text-muted pt-3">
       <br>
-      <p>Start the analyze and have the results here as son as they are available.</p>
+      <p>Benign :{{result.benign}}</p>
+      <p>Malignant :{{result.malignant}}</p>
+      <button (click)="saveFile()" class="btn btn-primary btn-block">Save</button>
+      <button class="btn btn-primary btn-block">Discard</button>
     </div>
+    <ng-template #NoResultsYet>
+      
+        <br>
+        <p>Start the analyze and have the results here as son as they are available.</p>
+
+      
+    </ng-template>
   </div>
 </div>
