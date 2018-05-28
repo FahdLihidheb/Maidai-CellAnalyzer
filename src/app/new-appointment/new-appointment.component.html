@@ -1,0 +1,261 @@
+<br>
+
+<div class="row">
+
+  <div class="col-md-4 order-md-2 box-shadow p-3">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Patient File</h6>
+    <br>
+    <div *ngIf="patientFile; else noPatientFile">
+      <h3 class="mb-0">
+        <h6>Full name: </h6>
+        <h5 class="text-primary">{{patientFile.patient.firstname}} {{patientFile.patient.lastname}}</h5>
+      </h3>
+      <br>
+      <div class="row">
+        <div class="col">
+          <h6>Birthdate: </h6>
+        </div>
+        <div class="col">
+          <div class="mb-1 text-muted">{{patientFile.patient.birthdate}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6>Gender: </h6>
+        </div>
+        <div class="col">
+          <div class="mb-1 text-muted">{{patientFile.patient.gender}}</div>
+        </div>
+      </div>
+      <br>
+      <h6>Note: </h6>
+      <p class="card-text mb-auto">{{patientFile.note}}</p>
+      <br>
+      <h6 class="border-bottom border-gray pb-2 mb-0">Contact informations</h6>
+      <br>
+      <div class="row">
+        <div class="col">
+          <h6>Email: </h6>
+        </div>
+        <div class="col">
+          {{patientFile.patient.email}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6>Phone number</h6>
+        </div>
+        <div class="col">
+          {{patientFile.patient.phonenumber}}
+        </div>
+      </div>
+    </div>
+    <ng-template #noPatientFile>
+      <div class="text-center text-muted pt-3">
+        <br>
+        <br>
+        <p>Select or create a new a patient file.</p>
+      </div>
+    </ng-template>
+
+    <br>
+    <br>
+    <br>
+    <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-block">New file</button>
+    <button type="button" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-secondary btn-block">Existing file</button>
+  </div>
+
+
+  <div class="col-md-8 order-md-2 box-shadow p-3">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Appointment details</h6>
+    <br>
+    <form [formGroup]="appointmentForm" (ngSubmit)="onAppointmentFormSubmit(appointmentForm.value)">
+
+
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Problem</label>
+        <input formControlName="problem" type="text" class="form-control" name="problem">
+        <div *ngIf="!appointmentForm.controls['problem'].valid && appointmentForm.controls['problem'].touched">
+          <p class="text-danger">Problem is required.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Visit type</label>
+        <select formControlName='visittype' class="form-control" name="visittype">
+          <option value="New">New</option>
+          <option value="Control">Control</option>
+        </select>
+        <div *ngIf="!appointmentForm.controls['visittype'].valid && appointmentForm.controls['visittype'].touched">
+          <p class="text-danger">Visit type is required.</p>
+        </div>
+      </div>
+
+
+
+      <div class="form-row">
+
+        <div class="form-group col-md-6">
+          <label>Time</label>
+          <input formControlName='dueTime' name="dueTime" class="form-control" type="time">
+          <div *ngIf="!appointmentForm.controls['dueTime'].valid && appointmentForm.controls['dueTime'].touched">
+            <p class="text-danger">Due time is required.</p>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="firstname">Due date</label>
+          <div class="input-group">
+            <input formControlName='dueDate' class="form-control" placeholder="yyyy-mm-dd" name="dueDate" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="!appointmentForm.controls['dueDate'].valid && appointmentForm.controls['dueDate'].touched">
+            <p class="text-danger">Due date is required.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea formControlName='note' class="form-control" name="note" rows="3"></textarea>
+        <div *ngIf="!appointmentForm.controls['note'].valid && appointmentForm.controls['note'].touched" style="width: 100%;">
+          <p class="text-danger">Note is required.</p>
+        </div>
+      </div>
+
+      <button value="Submit form" [disabled]="!appointmentForm.valid || !patientFileExists" type="submit" class="btn btn-primary">Save appointment</button>
+    </form>
+  </div>
+
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">New Patient File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="patientForm" (ngSubmit)="onPatientFormSubmit(patientForm.value)">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>First name</label>
+              <input formControlName='firstname' type="text" class="form-control" name="firstname">
+              <div *ngIf="!patientForm.controls['firstname'].valid && patientForm.controls['firstname'].touched">
+                <p class="text-danger">Valid first name is required.</p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Last name</label>
+              <input formControlName='lastname' type="text" class="form-control" name="lastname">
+              <div *ngIf="!patientForm.controls['lastname'].valid && patientForm.controls['lastname'].touched">
+                <p class="text-danger">Valid last name is required.</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="firstname">Birthdate</label>
+            <div class="input-group">
+              <input formControlName='birthdate' class="form-control" placeholder="yyyy-mm-dd" name="birthdate" ngbDatepicker #d2="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="profession">Gender</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+              </div>
+              <select formControlName='gender' class="custom-select" id="inputGroupSelect01" name='gender'>
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="user.number">Email
+              </label>
+              <input formControlName='email' type="email" class="form-control" name='email'>
+              <div *ngIf="!patientForm.controls['email'].valid && patientForm.controls['email'].touched" style="width: 100%;">
+                <p class="text-danger">Valid email is required.</p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="user.number">Phone number
+              </label>
+              <input formControlName='phonenumber' type="number" class="form-control" name='phonenumber'>
+              <div *ngIf="!patientForm.controls['phonenumber'].valid && patientForm.controls['phonenumber'].touched" style="width: 100%;">
+                <p class="text-danger">Valid phone number is required.</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea formControlName='note' class="form-control" name="note" rows="3"></textarea>
+            <div *ngIf="!patientForm.controls['note'].valid && patientForm.controls['note'].touched" style="width: 100%;">
+              <p class="text-danger">Note is required.</p>
+            </div>
+          </div>
+          <button value="Submit form" [disabled]="!patientForm.valid" type="submit" class="btn btn-primary">Add patinet File</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Patient files list</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="media text-muted pt-3" *ngFor="let patientFile of patientFiles">
+          <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;"
+            src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1638a4e8f17%20text%20%7B%20fill%3A%23007bff%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A2pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1638a4e8f17%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22%23007bff%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2211.546875%22%20y%3D%2216.9%22%3E32x32%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            data-holder-rendered="true">
+          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">{{patientFile.patient.firstname}} {{patientFile.patient.lastname}}</strong>
+
+            </div>
+            <span class="d-block">last updated : {{patientFile.createdOn}}</span>
+            <button type="button" (click)="SelectPatientFile(patientFile)" class="btn btn-link btn-sm">Select this file</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

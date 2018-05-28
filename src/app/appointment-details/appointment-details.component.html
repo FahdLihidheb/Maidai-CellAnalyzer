@@ -1,0 +1,94 @@
+<br>
+
+<div class="row" *ngIf="appointment">
+
+  <div class="col-md-4 order-md-2 box-shadow p-3">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Patient File</h6>
+    <br>
+    <div>
+      <h3 class="mb-0">
+        <h6>Full name: </h6>
+        <h5 class="text-primary">{{appointment.patientFile.patient.firstname}} {{appointment.patientFile.patient.lastname}}</h5>
+      </h3>
+      <br>
+      <div class="row">
+        <div class="col">
+          <h6>Birthdate: </h6>
+        </div>
+        <div class="col">
+          <div class="mb-1 text-muted">{{appointment.patientFile.patient.birthdate}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6>Gender: </h6>
+        </div>
+        <div class="col">
+          <div class="mb-1 text-muted">{{appointment.patientFile.patient.gender}}</div>
+        </div>
+      </div>
+      <br>
+      <h6>Note: </h6>
+      <p class="card-text mb-auto">{{appointment.patientFile.note}}</p>
+      <br>
+      <h6 class="border-bottom border-gray pb-2 mb-0">Contact informations</h6>
+      <br>
+      <div class="row">
+        <div class="col">
+          <h6>Email: </h6>
+        </div>
+        <div class="col">
+          {{appointment.patientFile.patient.email}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6>Phone number</h6>
+        </div>
+        <div class="col">
+          {{appointment.patientFile.patient.phonenumber}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-8 order-md-2 box-shadow p-3">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Appointment details</h6>
+    <br>
+
+
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Problem</label>
+      <input disabled [(ngModel)]='appointment.problem' type="text" class="form-control" name="problem">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Visit type</label>
+      <input disabled [(ngModel)]='appointment.visitType' type="text" class="form-control" name="problem">
+    </div>
+
+
+
+    <div class="form-row">
+
+      <div class="form-group col-md-6">
+        <label>Time</label>
+        <input disabled [(ngModel)]='appointment.dueDate.time' name="dueTime" class="form-control" type="time">
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="firstname">Due date</label>
+        <input disabled  class="form-control" placeholder="yyyy-mm-dd" name="dueDate">
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea disabled [(ngModel)]='appointment.note' class="form-control" name="note" rows="3"></textarea>
+    </div>
+
+  </div>
+
+</div>

@@ -1,6 +1,7 @@
 import { AnalyzeFile } from '../cell-analyzer-service/AnalyzeFile';
 import { Appointment } from '../appointment-service/Appointment';
 
+
 export class PatientFile {
     _id: string;
     patient: {

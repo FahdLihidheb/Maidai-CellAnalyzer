@@ -39,6 +39,9 @@ import { PatientFileCellAnalyzeComponent } from './patient-file-cell-analyze/pat
 import { CellAnalyzeComponent } from './cell-analyze/cell-analyze.component';
 import { AnalyzerOutletComponent } from './analyzer-outlet/analyzer-outlet.component';
 import { PatientFilesListComponent } from './patient-files-list/patient-files-list.component';
+import { AppointmentsListComponent } from './appointments-list/appointments-list.component';
+import { AppointmentDetailsComponent } from './appointment-details/appointment-details.component';
+import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 
 
 const routes: Routes = [
@@ -70,7 +73,14 @@ const routes: Routes = [
           { path: 'cell-analyze', component: CellAnalyzeComponent },
         ]
       },
-      { path: 'appoinments', component: AppoinmentComponent }
+      {
+        path: 'appoinments', component: AppoinmentComponent, children: [
+          { path: '', redirectTo: 'list', pathMatch: 'full' },
+          { path: 'list', component: AppointmentsListComponent },
+          { path: 'details/:appointmentId', component: AppointmentDetailsComponent },
+          { path: 'new-appointment', component: NewAppointmentComponent },
+        ]
+      }
     ]
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
@@ -96,7 +106,10 @@ const routes: Routes = [
     PatientFileCellAnalyzeComponent,
     CellAnalyzeComponent,
     AnalyzerOutletComponent,
-    PatientFilesListComponent
+    PatientFilesListComponent,
+    AppointmentsListComponent,
+    AppointmentDetailsComponent,
+    NewAppointmentComponent
   ],
   imports: [
     BrowserModule,
