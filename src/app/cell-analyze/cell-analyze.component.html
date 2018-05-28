@@ -6,7 +6,7 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">Sample details</h6>
     <br>
 
-    <form>
+    
 
 
       <div class="form-group">
@@ -20,19 +20,19 @@
 
       <div class="form-group">
         <label for="exampleFormControlInput1">Analyze codename</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1">
+        <input type="text" class="form-control" id="exampleFormControlInput1" [(ngModel)]="analyseFile.codename" >
       </div>
 
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Analayze notes</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea [(ngModel)]="analyseFile.note" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>
 
       <button type="submit" class="btn btn-primary btn-block" (click)="uploader.queue[0].upload()" [disabled]="uploader.queue[0] ? false : true">
 
         Analyze sample</button>
 
-    </form>
+    
   </div>
 
   <div class="col-md-8 order-md-2 box-shadow p-3">
@@ -41,6 +41,8 @@
       <br>
       <p>Benign :{{result.benign}}</p>
       <p>Malignant :{{result.malignant}}</p>
+      <button (click)="saveFile()" class="btn btn-primary btn-block">Save</button>
+      <button class="btn btn-primary btn-block">Discard</button>
     </div>
     <ng-template #NoResultsYet>
       
